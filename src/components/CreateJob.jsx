@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import { ThemeProvider, useTheme } from "@mui/material/styles";
 import { Paper } from "@mui/material";
 import Box from "@mui/material/Box";
-// import json2html from "json-to-html";
-import { json2html } from "html2json";
 
 const CreateJob = () => {
   const [value, setValue] = useState(null);
