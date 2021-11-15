@@ -12,7 +12,9 @@ const NavBar = () => {
     <Box
       sx={{
         flexGrow: 1,
-        style: { position: "sticky", top: 0, zIndex: 2 },
+        position: "sticky",
+        top: 0,
+        zIndex: 2,
       }}
     >
       <AppBar position="static">

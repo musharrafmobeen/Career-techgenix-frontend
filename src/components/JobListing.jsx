@@ -9,12 +9,27 @@ import MUIRichTextEditor from "mui-rte";
 import { ThemeProvider, useTheme } from "@mui/material/styles";
 import { Paper } from "@mui/material";
 import Box from "@mui/material/Box";
-import { style } from "@mui/system";
+import Modal from "@mui/material/Modal";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const JobListing = () => {
   const [jobData, setJobData] = useState([]);
   const [selectedJob, setSelectedJob] = useState({});
   const [displayJobDetails, setDisplayJobsDetails] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     axios
@@ -102,7 +117,7 @@ const JobListing = () => {
             sx={{
               minWidth: 0,
               position: "sticky",
-              top: "1%",
+              top: "8%",
               left: 0,
               zIndex: 1,
               height: "100vh",
@@ -127,6 +142,7 @@ const JobListing = () => {
             <CardActions>
               <Button
                 size="small"
+                onClick={handleOpen}
                 sx={{ background: "blue", color: "white", marginLeft: "0.5em" }}
               >
                 Apply
@@ -140,7 +156,7 @@ const JobListing = () => {
                     "& > :not(style)": {
                       m: 1,
                       width: "100%",
-                      height: "70%",
+                      height: "65%",
                       overflowY: "scroll",
                     },
                     height: "100%",
@@ -168,6 +184,26 @@ const JobListing = () => {
       ) : (
         <></>
       )}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <form action="">
+            <label htmlFor="name">Name</label>
+            <br />
+            <input name="name" type="text" />
+            <br />
+            <label htmlFor="email">Email</label>
+            <br />
+            <input name="email" type="text" />
+            <br />
+            <input type="submit" value="Apply" />
+          </form>
+        </Box>
+      </Modal>
     </div>
   );
 };
