@@ -1,0 +1,51 @@
+.aboutus-container {
+  width: 100%;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-content: center;
+  background: radial-gradient(rgb(162, 192, 255), rgb(31, 7, 70));
+}
+
+.aboutus-heading {
+  margin-top: 5em;
+  width: 100%;
+  align-self: center;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.aboutus-figure {
+  margin-top: 0%;
+  min-width: 0;
+  align-self: center;
+}
+
+.aboutus-img {
+  width: 100%;
+  border-radius: 5em;
+}
+
+.aboutus-text {
+  align-self: center;
+  background-color: rgb(109, 7, 109);
+  color: white;
+  padding-right: 2em;
+  padding-left: 2em;
+  margin-left: 2em;
+  margin-right: 2em;
+  text-align: center;
+}
+
+@media screen and (max-width: 480px) {
+  .aboutus-text {
+    font-size: small;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .aboutus-text {
+    font-size: x-small;
+  }
+}
