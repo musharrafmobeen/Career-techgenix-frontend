@@ -45,10 +45,32 @@ const JobListing = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNmber] = useState("");
+  const [search, setSearch] = useState("");
+  const [allJobData, setAllJObData] = useState([]);
 
-  // useEffect(() => {
-  //   setJobUrl("localhost:5000/jobs/byCategory/react");
-  // }, []);
+  useEffect(() => {
+    if (jobData.length > 0) {
+      setSelectedJob(jobData[0]);
+      setDisplayJobsDetails(true);
+    } else {
+      setSelectedJob({});
+      setDisplayJobsDetails(false);
+    }
+  }, [jobData]);
+
+  const onSearch = (e) => {
+    setSearch(e.target.value);
+    if (!(e.target.value === "")) {
+      setJobData(
+        jobData.filter((job) =>
+          job.name.toLowerCase().includes(e.target.value.toLowerCase())
+        )
+      );
+      console.log("length : " + jobData.length);
+    } else {
+      setJobData(allJobData);
+    }
+  };
 
   const onNameChange = (e) => {
     setName(e.target.value);
@@ -83,6 +105,7 @@ const JobListing = (props) => {
       .get(jobUrl)
       .then((data) => {
         setJobData(data.data.jobs);
+        setAllJObData(data.data.jobs);
         data.data.jobs.length > 0
           ? setSelectedJob(data.data.jobs[0])(setDisplayJobsDetails(true))
           : setSelectedJob({})(setDisplayJobsDetails(false));
@@ -93,306 +116,341 @@ const JobListing = (props) => {
   const theme = useTheme();
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-around",
-        flexWrap: "wrap",
-      }}
-    >
-      <div style={{ flex: "0 1 40%" }}>
-        {jobData.map((job) => (
-          <Card
-            key={job._id}
-            sx={{
-              minWidth: 275,
-              margin: "1em 1em 1em 1em",
-              boxShadow: "0px 5px 5px 0px rgba(0,0,0,0.7)",
-              borderLeft:
-                selectedJob._id === job._id
-                  ? "6px solid rgb(30,57,105)"
-                  : "0px solid rgb(255,255,255)",
-              borderRight:
-                selectedJob._id === job._id
-                  ? "1px solid rgb(30,57,105)"
-                  : "0px solid rgb(255,255,255)",
-              borderTop:
-                selectedJob._id === job._id
-                  ? "1px solid rgb(30,57,105)"
-                  : "0px solid rgb(255,255,255)",
-              borderBottom:
-                selectedJob._id === job._id
-                  ? "1px solid rgb(30,57,105)"
-                  : "0px solid rgb(255,255,255)",
-            }}
-            onClick={() => {
-              setSelectedJob(job);
-              setDisplayJobsDetails(true);
-            }}
-          >
-            <CardContent>
-              <Typography
-                sx={{ fontSize: 18, color: "blue" }}
-                color="text.primary"
-                gutterBottom
-              >
-                {job.name}
-              </Typography>
-              <Typography sx={{ mb: 1 }} color="text.secondary">
-                TechGenix
-              </Typography>
-              <Typography variant="h6" sx={{ fontSize: 14 }}>
-                Rs 70,000 - 80,000
-              </Typography>
-              <Typography variant="h6" sx={{ fontSize: 14, mb: 1 }}>
-                Easy Apply
-              </Typography>
-              <Typography variant="body2">{job.description}</Typography>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {displayJobDetails ? (
-        <div
-          style={{
-            margin: "1em 1em 1em 0em",
-            display: "flex",
-            flexDirection: "column",
-            flex: "0 1 55%",
+    <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          width: "100%",
+          position: "sticky",
+          top: "8%",
+          left: 0,
+          zIndex: 1,
+          paddingRight: "2em",
+        }}
+      >
+        <TextField
+          id="outlined-textarea"
+          label="Search"
+          placeholder="Search"
+          type="text"
+          multiline
+          value={search}
+          onChange={(e) => {
+            onSearch(e);
           }}
-        >
-          <Card
-            sx={{
-              minWidth: 0,
-              position: "sticky",
-              top: "8%",
-              left: 0,
-              zIndex: 1,
-              height: "90vh",
+          style={{
+            width: "20%",
+          }}
+        />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          flexWrap: "wrap",
+        }}
+      >
+        <div style={{ flex: "0 1 40%" }}>
+          {jobData.map((job) => (
+            <Card
+              key={job._id}
+              sx={{
+                minWidth: 275,
+                margin: "1em 1em 1em 1em",
+                boxShadow: "0px 5px 5px 0px rgba(0,0,0,0.7)",
+                borderLeft:
+                  selectedJob._id === job._id
+                    ? "6px solid rgb(30,57,105)"
+                    : "0px solid rgb(255,255,255)",
+                borderRight:
+                  selectedJob._id === job._id
+                    ? "1px solid rgb(30,57,105)"
+                    : "0px solid rgb(255,255,255)",
+                borderTop:
+                  selectedJob._id === job._id
+                    ? "1px solid rgb(30,57,105)"
+                    : "0px solid rgb(255,255,255)",
+                borderBottom:
+                  selectedJob._id === job._id
+                    ? "1px solid rgb(30,57,105)"
+                    : "0px solid rgb(255,255,255)",
+              }}
+              onClick={() => {
+                setSelectedJob(job);
+                setDisplayJobsDetails(true);
+              }}
+            >
+              <CardContent>
+                <Typography
+                  sx={{ fontSize: 18, color: "blue" }}
+                  color="text.primary"
+                  gutterBottom
+                >
+                  {job.name}
+                </Typography>
+                <Typography sx={{ mb: 1 }} color="text.secondary">
+                  TechGenix
+                </Typography>
+                <Typography variant="h6" sx={{ fontSize: 14 }}>
+                  Rs 70,000 - 80,000
+                </Typography>
+                <Typography variant="h6" sx={{ fontSize: 14, mb: 1 }}>
+                  Easy Apply
+                </Typography>
+                <Typography variant="body2">{job.description}</Typography>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {displayJobDetails ? (
+          <div
+            style={{
+              margin: "1em 1em 1em 0em",
+              display: "flex",
+              flexDirection: "column",
+              flex: "0 1 55%",
             }}
           >
-            <CardContent>
+            <Card
+              sx={{
+                minWidth: 0,
+                position: "sticky",
+                top: "15%",
+                left: 0,
+                zIndex: 1,
+                height: "80vh",
+              }}
+            >
+              <CardContent>
+                <Typography
+                  sx={{ fontSize: 18, color: "blue" }}
+                  color="text.primary"
+                  gutterBottom
+                >
+                  {selectedJob.name}
+                </Typography>
+                <Typography sx={{ mb: 1 }} color="text.secondary">
+                  TechGenix
+                </Typography>
+                <Typography variant="h6" sx={{ fontSize: 14 }}>
+                  Rs 70,000 - 80,000
+                </Typography>
+                <Typography variant="body2">
+                  {selectedJob.description}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  size="small"
+                  onClick={handleOpen}
+                  sx={{
+                    background: "blue",
+                    color: "white",
+                    marginLeft: "0.5em",
+                  }}
+                >
+                  Apply
+                </Button>
+              </CardActions>
+              <>
+                <ThemeProvider theme={theme}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      "& > :not(style)": {
+                        m: 1,
+                        width: "100%",
+                        height: "70%",
+                        overflowY: "scroll",
+                      },
+                      height: "100%",
+                    }}
+                  >
+                    <Paper
+                      elevation={0}
+                      variant="outlined"
+                      square
+                      style={{
+                        padding: "1em",
+                      }}
+                    >
+                      <MUIRichTextEditor
+                        readOnly
+                        toolbar={false}
+                        value={selectedJob.detail}
+                      />
+                    </Paper>
+                  </Box>
+                </ThemeProvider>
+              </>
+            </Card>
+          </div>
+        ) : (
+          <></>
+        )}
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <div style={{ width: "100%" }}>
               <Typography
-                sx={{ fontSize: 18, color: "blue" }}
-                color="text.primary"
-                gutterBottom
+                style={{ marginBottom: "1rem", textAlign: "center" }}
+                variant="h4"
+                component="div"
               >
                 {selectedJob.name}
               </Typography>
-              <Typography sx={{ mb: 1 }} color="text.secondary">
-                TechGenix
-              </Typography>
-              <Typography variant="h6" sx={{ fontSize: 14 }}>
-                Rs 70,000 - 80,000
-              </Typography>
-              <Typography variant="body2">{selectedJob.description}</Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                size="small"
-                onClick={handleOpen}
-                sx={{ background: "blue", color: "white", marginLeft: "0.5em" }}
-              >
-                Apply
-              </Button>
-            </CardActions>
-            <>
-              <ThemeProvider theme={theme}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    "& > :not(style)": {
-                      m: 1,
-                      width: "100%",
-                      height: "70%",
-                      overflowY: "scroll",
-                    },
-                    height: "100%",
+              <TextField
+                id="outlined-textarea"
+                label="Name"
+                placeholder="Name"
+                multiline
+                onChange={(e) => {
+                  onNameChange(e);
+                }}
+                value={name}
+                style={{ width: "100%", marginBottom: "1rem" }}
+              />
+              <TextField
+                id="outlined-textarea"
+                label="Email"
+                type="email"
+                placeholder="Email"
+                multiline
+                onChange={(e) => {
+                  onEmailChange(e);
+                }}
+                value={email}
+                style={{ width: "100%", marginBottom: "1rem" }}
+              />
+              <TextField
+                id="outlined-number"
+                label="Phone Number"
+                type="number"
+                value={phoneNumber}
+                onChange={(e) => {
+                  onPhoneNumberChange(e);
+                }}
+                style={{ width: "100%", marginBottom: "1rem" }}
+              />
+              <div style={{ marginBottom: "1rem" }}>
+                <input
+                  style={{ display: "none" }}
+                  id="contained-button-file"
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => {
+                    onFileSelect(e);
                   }}
-                >
-                  <Paper
-                    elevation={0}
-                    variant="outlined"
-                    square
-                    style={{
-                      padding: "1em",
-                    }}
+                />
+                <label htmlFor="contained-button-file">
+                  <Button
+                    style={{ width: "100%", marginBottom: "1rem" }}
+                    variant="contained"
+                    color="primary"
+                    component="span"
                   >
-                    <MUIRichTextEditor
-                      readOnly
-                      toolbar={false}
-                      value={selectedJob.detail}
-                    />
-                  </Paper>
-                </Box>
-              </ThemeProvider>
-            </>
-          </Card>
-        </div>
-      ) : (
-        <></>
-      )}
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div style={{ width: "100%" }}>
-            <Typography
-              style={{ marginBottom: "1rem", textAlign: "center" }}
-              variant="h4"
-              component="div"
-            >
-              {selectedJob.name}
-            </Typography>
-            <TextField
-              id="outlined-textarea"
-              label="Name"
-              placeholder="Name"
-              multiline
-              onChange={(e) => {
-                onNameChange(e);
-              }}
-              value={name}
-              style={{ width: "100%", marginBottom: "1rem" }}
-            />
-            <TextField
-              id="outlined-textarea"
-              label="Email"
-              type="email"
-              placeholder="Email"
-              multiline
-              onChange={(e) => {
-                onEmailChange(e);
-              }}
-              value={email}
-              style={{ width: "100%", marginBottom: "1rem" }}
-            />
-            <TextField
-              id="outlined-number"
-              label="Phone Number"
-              type="number"
-              value={phoneNumber}
-              onChange={(e) => {
-                onPhoneNumberChange(e);
-              }}
-              style={{ width: "100%", marginBottom: "1rem" }}
-            />
-            <div style={{ marginBottom: "1rem" }}>
-              <input
-                style={{ display: "none" }}
-                id="contained-button-file"
-                type="file"
-                accept="application/pdf"
-                onChange={(e) => {
-                  onFileSelect(e);
-                }}
-              />
-              <label htmlFor="contained-button-file">
-                <Button
-                  style={{ width: "100%", marginBottom: "1rem" }}
-                  variant="contained"
-                  color="primary"
-                  component="span"
-                >
-                  Upload CV
-                </Button>
-              </label>
-              {file !== null ? (
-                <>
-                  <a
-                    href={fileURL}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ display: "inline-flex" }}
+                    Upload CV
+                  </Button>
+                </label>
+                {file !== null ? (
+                  <>
+                    <a
+                      href={fileURL}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ display: "inline-flex" }}
+                    >
+                      <img
+                        src="pdf.png"
+                        width="40px"
+                        height="40px"
+                        style={{ display: "inline" }}
+                        alt=""
+                      />
+                      <p>{file}</p>
+                    </a>
+                    <p
+                      onClick={() => {
+                        setFile(null);
+                        setFileURL(null);
+                      }}
+                      style={{
+                        display: "inline",
+                        float: "right",
+                        cursor: "pointer",
+                      }}
+                    >
+                      X
+                    </p>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
+              <div style={{ marginBottom: "1rem" }}>
+                <input
+                  style={{ display: "none" }}
+                  id="contained-button-file-cl"
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => {
+                    onClFileSelect(e);
+                  }}
+                />
+                <label htmlFor="contained-button-file-cl">
+                  <Button
+                    style={{ width: "100%", marginBottom: "1rem" }}
+                    variant="contained"
+                    color="primary"
+                    component="span"
                   >
-                    <img
-                      src="pdf.png"
-                      width="40px"
-                      height="40px"
-                      style={{ display: "inline" }}
-                      alt=""
-                    />
-                    <p>{file}</p>
-                  </a>
-                  <p
-                    onClick={() => {
-                      setFile(null);
-                      setFileURL(null);
-                    }}
-                    style={{
-                      display: "inline",
-                      float: "right",
-                      cursor: "pointer",
-                    }}
-                  >
-                    X
-                  </p>
-                </>
-              ) : (
-                <></>
-              )}
+                    Upload CL
+                  </Button>
+                </label>
+                {clfile !== null ? (
+                  <>
+                    <a
+                      href={clfileURL}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ display: "inline-flex" }}
+                    >
+                      <img
+                        src="pdf.png"
+                        width="40px"
+                        height="40px"
+                        style={{ display: "inline" }}
+                        alt=""
+                      />
+                      <p>{clfile}</p>
+                    </a>
+                    <p
+                      onClick={() => {
+                        setClFile(null);
+                        setClFileURL(null);
+                      }}
+                      style={{ display: "inline", float: "right" }}
+                    >
+                      X
+                    </p>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
+              <Button variant="outlined" style={{ width: "100%" }}>
+                Submit
+              </Button>
             </div>
-            <div style={{ marginBottom: "1rem" }}>
-              <input
-                style={{ display: "none" }}
-                id="contained-button-file-cl"
-                type="file"
-                accept="application/pdf"
-                onChange={(e) => {
-                  onClFileSelect(e);
-                }}
-              />
-              <label htmlFor="contained-button-file-cl">
-                <Button
-                  style={{ width: "100%", marginBottom: "1rem" }}
-                  variant="contained"
-                  color="primary"
-                  component="span"
-                >
-                  Upload CL
-                </Button>
-              </label>
-              {clfile !== null ? (
-                <>
-                  <a
-                    href={clfileURL}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ display: "inline-flex" }}
-                  >
-                    <img
-                      src="pdf.png"
-                      width="40px"
-                      height="40px"
-                      style={{ display: "inline" }}
-                      alt=""
-                    />
-                    <p>{clfile}</p>
-                  </a>
-                  <p
-                    onClick={() => {
-                      setClFile(null);
-                      setClFileURL(null);
-                    }}
-                    style={{ display: "inline", float: "right" }}
-                  >
-                    X
-                  </p>
-                </>
-              ) : (
-                <></>
-              )}
-            </div>
-            <Button variant="outlined" style={{ width: "100%" }}>
-              Submit
-            </Button>
-          </div>
-        </Box>
-      </Modal>
+          </Box>
+        </Modal>
+      </div>
     </div>
   );
 };

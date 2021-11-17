@@ -5,6 +5,8 @@ import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import AboutUs from "./components/AboutUs";
 import Redirect from "./components/Redirect";
+import Scheduler from "./components/Scheduler";
+import Candidates from "./components/Candidates";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
         <Route exact path="/about" element={<AboutUs />} />
         <Route exact path="/jobs" element={<JobListing />} />
         <Route exact path="/createJob" element={<CreateJob />} />
+        <Route exact path="/candidates" element={<Candidates />} />
+        <Route exact path="/scheduleMeeting" element={<Scheduler />} />
         <Route exact path="/jobCategory/:category" element={<JobListing />} />
         <Route exact path="*" element={<Redirect />} />
       </Routes>

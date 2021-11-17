@@ -19,6 +19,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import InfoIcon from "@mui/icons-material/Info";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
+import Forms from "./Forms";
 
 const style = {
   position: "absolute",
@@ -207,52 +208,7 @@ const NavBar = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <div style={{ width: "100%" }}>
-            <Typography
-              style={{ marginBottom: "1rem", textAlign: "center" }}
-              variant="h4"
-              component="div"
-            >
-              Sign In
-            </Typography>
-            <TextField
-              id="outlined-textarea"
-              label="Email"
-              placeholder="Email"
-              type="email"
-              multiline
-              style={{ width: "100%", marginBottom: "1rem" }}
-            />
-            <TextField
-              id="outlined-textarea"
-              label="Password"
-              placeholder="Password"
-              type="password"
-              multiline
-              style={{ width: "100%", marginBottom: "1rem" }}
-            />
-            <Button
-              variant="outlined"
-              style={{ width: "100%", marginBottom: "1rem" }}
-            >
-              Submit
-            </Button>
-            <Typography
-              style={{ marginBottom: "1rem", textAlign: "center" }}
-              variant="p"
-              component="div"
-            >
-              Do Not Have An Account Click On{" "}
-              {
-                <a href="" style={{ textDecoration: "none" }}>
-                  Sign UP
-                </a>
-              }
-              , TO Create A New Account
-            </Typography>
-          </div>
-        </Box>
+        <Forms />
       </Modal>
     </>
   );
